@@ -1,0 +1,8 @@
+name: CKEditor Advanced Settings
+description: Provides advanced settings to control ACF mode and content rules in CKEditor.
+type: module
+core_version_requirement: ^9.2
+package: Editor
+dependencies:
+  - drupal:editor
+  - drupal:ckeditor

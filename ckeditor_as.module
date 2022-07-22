@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * CKEditor Advanced Settings module file.
+ */
+
+use Drupal\Core\Site\Settings;
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ *
+ * Add custom configuration settings to CKEditor.
+ *
+ * @link https://ckeditor.com/docs/ckeditor4/latest/guide/dev_advanced_content_filter.html
+ */
+function ckeditor_as_editor_js_settings_alter(array &$settings) {
+  $module_path = base_path() . \Drupal::service('extension.path.resolver')->getPath('module', 'ckeditor_as');
+  foreach ($settings['editor']['formats'] as &$format) {
+    if ($format['editor'] == 'ckeditor') {
+      // Set ACF mode and apply content rules as necessary.
+      switch ($format['editorSettings']['acf_mode']) {
+        case 'custom':
+          // ACF rules will define allowed content.
+          $format['editorSettings']['allowedContent'] = trim($format['editorSettings']['acf_rules']);
+          break;
+
+        case 'automatic':
+          // Toolbar buttons will define allowed content. ACF rules will be used
+          // to allow for additional content.
+          $format['editorSettings']['extraAllowedContent'] = trim($format['editorSettings']['acf_rules']);
+          // The allowedContent setting must be deleted so ACF won't fallback
+          // to custom mode.
+          unset($format['editorSettings']['allowedContent']);
+          break;
+      }
+
+      // Set pasteFromWordPromptCleanup toggle.
+      if (isset($format['editorSettings']['paste_word_prompt'])) {
+        $format['editorSettings']['pasteFromWordPromptCleanup'] = (bool) $format['editorSettings']['paste_word_prompt'];
+      }
+
+      // Add customizations that must be created in Javascript.
+      $format['editorSettings']['customConfig'] = $module_path . '/js/ckeditor.js';
+    }
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function ckeditor_as_page_attachments(array &$attachments) {
+  // Add siteHosts JS setting. This is used by ckeditor.js in order to add the
+  // target="_blank" attribute to links pointing to external URLs.
+  $attachments['#attached']['drupalSettings']['ckeditor']['siteHosts'] = Settings::get('ckeditor.site_hosts');
+}

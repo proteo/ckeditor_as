@@ -1,0 +1,17 @@
+{
+  "name": "proteo/ckeditor_as",
+  "description": "A Drupal module that provides advanced settings to control ACF mode and content rules in CKEditor.",
+  "type": "drupal-custom-module",
+  "homepage": "https://github.com/proteo/ckeditor_as",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Proteo",
+      "email": "me@proteo.dev"
+    }
+  ],
+  "require": {
+    "php": ">=7.4.0",
+    "drupal/core": "^9.2"
+  }
+}
