@@ -41,7 +41,7 @@ function ckeditor_as_editor_js_settings_alter(array &$settings) {
       }
 
       // Add customizations that must be created in Javascript.
-      $format['editorSettings']['customConfig'] = $module_path . '/js/ckeditor.js';
+      $format['editorSettings']['customConfig'] = $module_path . '/js/ckeditor_as.js';
     }
   }
 }
