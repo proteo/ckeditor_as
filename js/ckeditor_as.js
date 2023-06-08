@@ -64,6 +64,12 @@ function CkTextCleanup(input) {
  * Adds target="_blank" to external links.
  */
 function CkReplaceAnchorTarget(input) {
+  // Check for the existance of the required "siteHosts" setting.
+  if (!drupalSettings.ckeditor.siteHosts) {
+    // Nothing to do here!
+    return input;
+  }
+
   var parser = new DOMParser();
   var d = parser.parseFromString(input, 'text/html');
   var a = d.getElementsByTagName('a');
